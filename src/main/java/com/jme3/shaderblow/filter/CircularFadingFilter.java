@@ -43,71 +43,57 @@ import com.jme3.renderer.ViewPort;
  * <pre>
  * Set speed to 0 ({@link CircularFadingFilter#setFadingSpeed(0)}) to avoid fading animation.
  * </pre>
- * 
+ *
  * @author H
  */
 public class CircularFadingFilter extends Filter {
 
-    /** Material definition path */
-    private static final String MAT_DEFS = "MatDefs/Filters/CircularFading/CircularFading.j3md";
-
-    /** Material's parameters */
+    // Material's parameters
     private static final String MP_CIRCLE_RADIUS = "CircleRadius";
     private static final String MP_CIRCLE_CENTER = "CircleCenter";
 
-    /** Fading animation general speed */
+    // Fading animation general speed */
     private static final float FADING_SPEED = 0.5f;
-
     private static final float DEFAULT_CIRCLE_RADIUS = 2.0f;
 
     private final Camera camera;
 
-    /** Geometry's position use as Circle's center point */
+    // Geometry's position use as Circle's center point
     private Vector3f circleCenter;
-
-    /** Circle's radius */
+    // Circle's radius
     private float circleRadius = DEFAULT_CIRCLE_RADIUS;
-
-    /** Fading animation speed */
+    // Fading animation speed
     private float fadingSpeed = 1.0f;
 
     /**
      * Constructor.
-     * 
+     *
      * @param camera
+     * @param target
      */
-    public CircularFadingFilter(final Camera camera, final Vector3f target) {
+    public CircularFadingFilter(Camera camera, Vector3f target) {
         super("CircularFadingFilter");
         this.camera = camera;
         this.circleCenter = target;
     }
 
-    /**
-     * @see Filter#getMaterial()
-     */
+    @Override
+    protected void initFilter(AssetManager manager, RenderManager renderManager, ViewPort vp, int w, int h) {
+        material = new Material(manager, "MatDefs/Filters/CircularFading/CircularFading.j3md");
+        material.setVector3(MP_CIRCLE_CENTER, camera.getScreenCoordinates(circleCenter));
+        material.setFloat(MP_CIRCLE_RADIUS, circleRadius);
+    }
+
+    @Override
+    protected void preFrame(float tpf) {
+        circleRadius -= tpf * fadingSpeed * FADING_SPEED;
+        material.setFloat(MP_CIRCLE_RADIUS, circleRadius);
+        material.setVector3(MP_CIRCLE_CENTER, camera.getScreenCoordinates(circleCenter));
+    }
+
     @Override
     protected Material getMaterial() {
-        return this.material;
-    }
-
-    /**
-     * @see Filter#initFilter(AssetManager, RenderManager,
-     *      ViewPort, int, int)
-     */
-    @Override
-    protected void initFilter(final AssetManager manager, final RenderManager renderManager, final ViewPort vp,
-            final int w, final int h) {
-        this.material = new Material(manager, MAT_DEFS);
-        this.material.setVector3(MP_CIRCLE_CENTER, this.camera.getScreenCoordinates(this.circleCenter));
-        this.material.setFloat(MP_CIRCLE_RADIUS, this.circleRadius);
-    }
-
-    @Override
-    protected void preFrame(final float tpf) {
-        this.circleRadius -= tpf * this.fadingSpeed * FADING_SPEED;
-        this.material.setFloat(MP_CIRCLE_RADIUS, this.circleRadius);
-
-        this.material.setVector3(MP_CIRCLE_CENTER, this.camera.getScreenCoordinates(this.circleCenter));
+        return material;
     }
 
     /**
@@ -121,18 +107,18 @@ public class CircularFadingFilter extends Filter {
     }
 
     public Vector3f getCircleCenter() {
-        return this.circleCenter;
+        return circleCenter;
     }
 
-    public void setTargetPosition(final Vector3f target) {
+    public void setTargetPosition(Vector3f target) {
         this.circleCenter = target;
     }
 
-    public void setCircleRadius(final float circleRadius) {
+    public void setCircleRadius(float circleRadius) {
         this.circleRadius = circleRadius;
     }
 
-    public void setFadingSpeed(final float fadingSpeed) {
+    public void setFadingSpeed(float fadingSpeed) {
         this.fadingSpeed = fadingSpeed;
     }
 }
