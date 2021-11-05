@@ -1,6 +1,6 @@
 Material My Material : MatDefs/Glass/Glass.j3md {
      MaterialParameters {
-        RefMap : Flip TestTextures/Water256.dds
+        RefMap : Flip Textures/Water256.dds
         Nor_Inv_Y : true
         ChromaticAbberation : true
 
