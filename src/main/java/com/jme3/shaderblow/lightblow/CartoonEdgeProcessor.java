@@ -37,7 +37,7 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.texture.FrameBuffer;
 
 /**
- * @author kobayasi
+ * @author Kobayashi
  */
 public class CartoonEdgeProcessor implements SceneProcessor {
 
@@ -48,36 +48,33 @@ public class CartoonEdgeProcessor implements SceneProcessor {
     }
 
     @Override
-    public void initialize(final RenderManager rm, final ViewPort vp) {
+    public void initialize(RenderManager rm, ViewPort vp) {
         this.rm = rm;
         this.vp = vp;
     }
 
     @Override
-    public void reshape(final ViewPort vp, final int w, final int h) {
+    public void reshape(ViewPort vp, int w, int h) {
     }
 
     @Override
     public boolean isInitialized() {
-        if (this.rm != null) {
-            return true;
-        }
-        return false;
+        return (rm != null);
     }
 
     @Override
-    public void preFrame(final float tpf) {
+    public void preFrame(float tpf) {
     }
 
     @Override
-    public void postQueue(final RenderQueue rq) {
-        this.rm.setForcedTechnique("CartoonEdge");
-        this.rm.renderViewPortQueues(this.vp, false);
-        this.rm.setForcedTechnique(null);
+    public void postQueue(RenderQueue rq) {
+        rm.setForcedTechnique("CartoonEdge");
+        rm.renderViewPortQueues(vp, false);
+        rm.setForcedTechnique(null);
     }
 
     @Override
-    public void postFrame(final FrameBuffer out) {
+    public void postFrame(FrameBuffer out) {
     }
 
     @Override
