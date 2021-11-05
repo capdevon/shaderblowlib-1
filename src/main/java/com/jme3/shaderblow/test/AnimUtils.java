@@ -35,13 +35,7 @@ public class AnimUtils {
         return null;
     }
 
-    /**
-     * @param <T>
-     * @param sp
-     * @param clazz
-     * @return
-     */
-    public static <T extends Control> T findControl(Spatial sp, Class<T> clazz) {
+    private static <T extends Control> T findControl(Spatial sp, Class<T> clazz) {
         T control = sp.getControl(clazz);
         if (control != null) {
             return control;
