@@ -69,13 +69,23 @@ public class NightVisionFilter extends Filter {
 
     public void setMaskTexture(Texture mask) {
         this.mask = mask;
+        if (material != null) {
+            material.setTexture("Mask", mask);
+        }
     }
 
     public void setNoiseTexture(Texture noise) {
         this.noise = noise;
+        if (material != null) {
+            material.setTexture("Noise", noise);
+        }
     }
 
     public void setColor(ColorRGBA color) {
         this.color = color;
+        if (material != null) {
+            material.setColor("Color", color);
+        }
     }
+
 }
