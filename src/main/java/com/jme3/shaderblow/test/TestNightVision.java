@@ -31,9 +31,8 @@
  */
 package com.jme3.shaderblow.test;
 
-import com.jme3.animation.AnimChannel;
-import com.jme3.animation.AnimControl;
-import com.jme3.animation.SkeletonControl;
+import com.jme3.anim.AnimComposer;
+import com.jme3.anim.SkinningControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.TextureKey;
 import com.jme3.input.KeyInput;
@@ -42,6 +41,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.renderer.Caps;
@@ -55,7 +55,7 @@ import com.jme3.util.TangentBinormalGenerator;
 /**
  * @author wezrule
  */
-public class TestNightVision extends SimpleApplication implements ActionListener {
+public class TestNightVision extends SimpleApplication {
 
     private NightVisionFilter nightVisFilter;
 
@@ -63,8 +63,8 @@ public class TestNightVision extends SimpleApplication implements ActionListener
      *
      * @param args
      */
-    public static void main(final String[] args) {
-        final TestNightVision app = new TestNightVision();
+    public static void main(String[] args) {
+        TestNightVision app = new TestNightVision();
         app.start();
     }
 
@@ -72,38 +72,51 @@ public class TestNightVision extends SimpleApplication implements ActionListener
     public void simpleInitApp() {
 
         flyCam.setMoveSpeed(10);
+        cam.setLocation(new Vector3f(-2.68017f, 2.3739557f, 9.298212f));
+        cam.setRotation(new Quaternion(0.006584827f, 0.993395f, -0.077767275f, 0.084114805f));
 
+        SceneHelper.buildFloor(assetManager, rootNode);
         buildScene();
         createSky();
         addLighting();
+        initInputs();
+    }
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-        nightVisFilter = new NightVisionFilter();
-        // Create Noise and mask textures
-        nightVisFilter.setColor(new ColorRGBA(0.0f, 1.0f, 0.0f, 1.0f));
-        nightVisFilter.setNoiseTexture(assetManager.loadTexture("Textures/NightVision/Noise.png"));
-        nightVisFilter.setMaskTexture(assetManager.loadTexture("Textures/NightVision/BinocularsMask.png"));
-
-        fpp.addFilter(nightVisFilter);
-        viewPort.addProcessor(fpp);
-
+    private void initInputs() {
         inputManager.addMapping("toggle", new KeyTrigger(KeyInput.KEY_SPACE));
-        inputManager.addListener(this, "toggle");
+        inputManager.addMapping("random-color", new KeyTrigger(KeyInput.KEY_R));
+        inputManager.addListener(acl, "toggle", "random-color");
     }
 
-    @Override
-    public void onAction(String name, boolean isPressed, float tpf) {
-        if (name.equals("toggle") && isPressed) {
-            boolean enabled = nightVisFilter.isEnabled();
-            nightVisFilter.setEnabled(!enabled);
+    final ActionListener acl = new ActionListener() {
+        @Override
+        public void onAction(String name, boolean isPressed, float tpf) {
+            if (name.equals("toggle") && isPressed) {
+                boolean enabled = nightVisFilter.isEnabled();
+                nightVisFilter.setEnabled(!enabled);
+                
+            } else if (name.equals("random-color") && isPressed) {
+                if (nightVisFilter.isEnabled()) {
+                    nightVisFilter.setColor(ColorRGBA.randomColor());
+                }
+            }
         }
-    }
+    };
 
     private void addLighting() {
         if (renderer.getCaps().contains(Caps.GLSL100)) {
             final CartoonEdgeProcessor cartoonEdgeProcess = new CartoonEdgeProcessor();
             viewPort.addProcessor(cartoonEdgeProcess);
         }
+
+        nightVisFilter = new NightVisionFilter();
+        nightVisFilter.setColor(new ColorRGBA(0.0f, 1.0f, 0.0f, 1.0f));
+        nightVisFilter.setNoiseTexture(assetManager.loadTexture("Textures/NightVision/Noise.png"));
+        nightVisFilter.setMaskTexture(assetManager.loadTexture("Textures/NightVision/BinocularsMask.png"));
+
+        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        fpp.addFilter(nightVisFilter);
+        viewPort.addProcessor(fpp);
 
         // Required for toon edge effect
         final DirectionalLight sun = new DirectionalLight();
@@ -129,10 +142,10 @@ public class TestNightVision extends SimpleApplication implements ActionListener
         playAnimation(char_boy2, "Action", true);
 
         final Spatial char_boy3 = loadModel("Materials/Glass/Glass2_low.j3m", new Vector3f(-1, 0, 0));
-        playAnimation(char_boy3, null, true);
+        playAnimation(char_boy3, "Action", true);
 
         final Spatial char_boy4 = loadModel("Materials/Glass/Glass3_color.j3m", new Vector3f(-2, 0, 0));
-        playAnimation(char_boy4, null, true);
+        playAnimation(char_boy4, "Action", true);
 
         final Spatial char_boy5 = loadModel("Materials/Glass/Glass4_specular.j3m", new Vector3f(-3, 0, 0));
         playAnimation(char_boy5, null, true);
@@ -151,12 +164,12 @@ public class TestNightVision extends SimpleApplication implements ActionListener
 
     private void playAnimation(Spatial model, String name, boolean hardwareSkinning) {
         if (name != null) {
-            AnimControl animControl = model.getControl(AnimControl.class);
-            AnimChannel channel = animControl.createChannel();
-            channel.setAnim(name);
+            AnimComposer composer = model.getControl(AnimComposer.class);
+            composer.setCurrentAction(name);
         }
 
-        SkeletonControl skControl = model.getControl(SkeletonControl.class);
+        SkinningControl skControl = model.getControl(SkinningControl.class);
         skControl.setHardwareSkinningPreferred(hardwareSkinning);
     }
+
 }
