@@ -56,16 +56,19 @@ public class PredatorVisionFilter extends Filter {
         material.setFloat("ScreenWidth", screenWidth);
     }
 
+    @Override
+    protected Material getMaterial() {
+        return material;
+    }
+
     public float getScreenWidth() {
         return screenWidth;
     }
 
     public void setScreenWidth(float screenWidth) {
         this.screenWidth = screenWidth;
-    }
-
-    @Override
-    protected Material getMaterial() {
-        return material;
+        if (material != null) {
+            material.setFloat("ScreenWidth", screenWidth);
+        }
     }
 }
