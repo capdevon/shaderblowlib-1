@@ -37,7 +37,7 @@ public class SceneHelper {
         box.scaleTextureCoordinates(new Vector2f(10, 10));
         Geometry floor = new Geometry("Floor", box);
         floor.setMaterial(mat);
-        floor.setLocalTranslation(0, -1, 0);
+        floor.setLocalTranslation(0, -0.25f, 0);
 
         rootNode.attachChild(floor);
         return floor;
