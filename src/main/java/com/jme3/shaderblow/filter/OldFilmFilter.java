@@ -89,22 +89,18 @@ public class OldFilmFilter extends Filter {
     private static final float DEFAULT_VIGNETTING_VALUE = 0.9f;
     private static final float DEFAULT_VIGNETTING_FADE_REGION_WIDTH = 0.4f;
 
-    private ColorRGBA filterColor = null;
-    private float colorDensity = 0f;
-    private float noiseDensity = 0f;
-    private float scratchDensity = 0f;
-    private float vignettingValue = 0f;
-    private Random randomGenerator = null;
+    private ColorRGBA filterColor = DEAFULT_COLOR;
+    private float colorDensity = DEFAULT_COLOR_DENSITY;
+    private float noiseDensity = DEFAULT_NOISE_DENSITY;
+    private float scratchDensity = DEFAULT_SCRATCH_DENSITY;
+    private float vignettingValue = DEFAULT_VIGNETTING_VALUE;
+    private final Random rand = new Random();
 
     /**
      * Default Constructor.
      */
     public OldFilmFilter() {
-        this(DEAFULT_COLOR, 
-            DEFAULT_COLOR_DENSITY, 
-            DEFAULT_NOISE_DENSITY, 
-            DEFAULT_SCRATCH_DENSITY, 
-            DEFAULT_VIGNETTING_VALUE);
+        super("OldFilmFilter");
     }
 
     /**
@@ -129,13 +125,12 @@ public class OldFilmFilter extends Filter {
      *                        the outer ring would be completely black.
      */
     public OldFilmFilter(ColorRGBA filterColor, float colorDensity, float noiseDensity, float scratchDensity, float vignettingValue) {
-        super("OldFilmFilter");
+        this();
         this.filterColor = filterColor;
         this.colorDensity = colorDensity;
         this.noiseDensity = noiseDensity;
         this.scratchDensity = scratchDensity;
         this.vignettingValue = vignettingValue;
-        this.randomGenerator = new Random();
     }
 
     @Override
@@ -147,12 +142,12 @@ public class OldFilmFilter extends Filter {
         material.setFloat(M_PARAM_NAME_SCRATCH_DENSITY, scratchDensity);
         material.setFloat(M_PARAM_NAME_INNER_VIGNETTING, vignettingValue - DEFAULT_VIGNETTING_FADE_REGION_WIDTH);
         material.setFloat(M_PARAM_NAME_OUTER_VIGNETTING, vignettingValue);
-        material.setFloat(M_PARAM_NAME_RANDOM_VALUE, randomGenerator.nextFloat());
+        material.setFloat(M_PARAM_NAME_RANDOM_VALUE, rand.nextFloat());
     }
 
     @Override
     protected void preFrame(float tpf) {
-        material.setFloat(M_PARAM_NAME_RANDOM_VALUE, randomGenerator.nextFloat());
+        material.setFloat(M_PARAM_NAME_RANDOM_VALUE, rand.nextFloat());
     }
 
     @Override
@@ -161,9 +156,9 @@ public class OldFilmFilter extends Filter {
     }
 
     public void setColorDensity(float colorDensity) {
+        this.colorDensity = colorDensity;
         if (material != null) {
             material.setFloat(M_PARAM_NAME_COLOR_DENSITY, colorDensity);
-            this.colorDensity = colorDensity;
         }
     }
 
@@ -172,9 +167,9 @@ public class OldFilmFilter extends Filter {
     }
 
     public void setFilterColor(ColorRGBA filterColor) {
+        this.filterColor = filterColor;
         if (material != null) {
             material.setColor(M_PARAM_NAME_FILTER_COLOR, filterColor);
-            this.filterColor = filterColor;
         }
     }
 
@@ -183,9 +178,9 @@ public class OldFilmFilter extends Filter {
     }
 
     public void setNoiseDensity(float noiseDensity) {
+        this.noiseDensity = noiseDensity;
         if (material != null) {
             material.setFloat(M_PARAM_NAME_NOISE_DENSITY, noiseDensity);
-            this.noiseDensity = noiseDensity;
         }
     }
 
@@ -194,9 +189,9 @@ public class OldFilmFilter extends Filter {
     }
 
     public void setScratchDensity(float scratchDensity) {
+        this.scratchDensity = scratchDensity;
         if (material != null) {
             material.setFloat(M_PARAM_NAME_SCRATCH_DENSITY, scratchDensity);
-            this.scratchDensity = scratchDensity;
         }
     }
 
@@ -205,10 +200,10 @@ public class OldFilmFilter extends Filter {
     }
 
     public void setVignettingValue(float vignettingValue) {
+        this.vignettingValue = vignettingValue;
         if (material != null) {
             material.setFloat(M_PARAM_NAME_INNER_VIGNETTING, vignettingValue - DEFAULT_VIGNETTING_FADE_REGION_WIDTH);
             material.setFloat(M_PARAM_NAME_OUTER_VIGNETTING, vignettingValue);
-            this.vignettingValue = vignettingValue;
         }
     }
 
