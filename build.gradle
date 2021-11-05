@@ -28,9 +28,6 @@ project.ext {
 }
 
 dependencies {
-
-	// Use JUnit test framework
-    testCompile 'junit:junit:4.12'
     
     // Engine:
     implementation 'org.jmonkeyengine:jme3-core:' + jmeVersion
@@ -52,8 +49,5 @@ dependencies {
     runtimeOnly 'org.jmonkeyengine:jme3-jogg:' + jmeVersion
     runtimeOnly 'org.jmonkeyengine:jme3-plugins:' + jmeVersion
     runtimeOnly 'org.jmonkeyengine:jme3-testdata:3.4.0-alpha6'
-    
-    // Logging
-    implementation 'org.slf4j:slf4j-api:1.7.32'
-    implementation 'org.slf4j:slf4j-simple:1.7.32'
+
 }
