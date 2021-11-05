@@ -52,7 +52,7 @@ public class CircularFadingFilter extends Filter {
     private static final String MP_CIRCLE_RADIUS = "CircleRadius";
     private static final String MP_CIRCLE_CENTER = "CircleCenter";
 
-    // Fading animation general speed */
+    // Fading animation general speed
     private static final float FADING_SPEED = 0.5f;
     private static final float DEFAULT_CIRCLE_RADIUS = 2.0f;
 
