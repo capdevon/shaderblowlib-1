@@ -69,20 +69,21 @@ public class ColorScaleFilter extends Filter {
     private boolean multiply;
 
     /**
-     * Default Constructor.
+     * Create a ColorScaleFilter.
      */
     public ColorScaleFilter() {
+        super("ColorScaleFilter");
     }
 
     /**
-     * Constructor.
+     * Create a ColorScaleFilter.
      *
      * @param filterColor Allow to set the color to apply. Default is red.
      * @param colorDensity Allow to set intensity of the color. Frag shader
      * clamps color intensity between 0 and 1.
      */
     public ColorScaleFilter(ColorRGBA filterColor, float colorDensity) {
-        super("ColorScaleFilter");
+        this();
         this.filterColor = filterColor;
         this.colorDensity = colorDensity;
     }
