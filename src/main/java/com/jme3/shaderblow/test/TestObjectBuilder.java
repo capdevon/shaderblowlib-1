@@ -5,7 +5,6 @@
 package com.jme3.shaderblow.test;
 
 import com.jme3.asset.AssetManager;
-import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
@@ -38,7 +37,6 @@ public class TestObjectBuilder {
 		final Geometry floorGeometry = new Geometry("Floor", floorBox);
 		floorGeometry.setMaterial(floorMaterial);
 		floorGeometry.setLocalTranslation(0, -1, 0);
-		floorGeometry.addControl(new RigidBodyControl(0));
 		
 		rootNode.attachChild(floorGeometry);
 
