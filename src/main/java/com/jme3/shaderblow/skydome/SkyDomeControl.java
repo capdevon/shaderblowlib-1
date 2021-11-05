@@ -31,6 +31,7 @@ import com.jme3.renderer.Camera;
  * @author t0neg0d
  */
 public class SkyDomeControl implements Control {
+    
     private ViewPort viewPort;
     private Spatial spatial;
     private AssetManager assetManager;
@@ -71,7 +72,7 @@ public class SkyDomeControl implements Control {
      * @param cam          A pointer to the default Camera of the JME application
      * @param model        j3o to use as the Sky Dome
      * @param nightSkyMap  The string value of the texture asset for night time sky
-     * @param moonMap      The string value of the texture asset for the moon.  This is the only param that accepts null
+     * @param moonMap      The string value of the texture asset for the moon. This is the only param that accepts null
      * @param cloudsMap    The string value of the texture asset for the clouds
      * @param fogAlphaMap  The string value of the texture asset for the blending alpha map for fog coloring
      */
@@ -134,6 +135,7 @@ public class SkyDomeControl implements Control {
         skyNight.setMaterial(mat_Sky);
     }
 
+    @Override
     public void setSpatial(Spatial spatial) {
         this.spatial = spatial;
         ((Node) spatial).attachChild(skyNight);
@@ -154,12 +156,12 @@ public class SkyDomeControl implements Control {
      * @return enabled
      */
     public boolean isEnabled() {
-        return this.enabled;
+        return enabled;
     }
 
     // Transitions
     public boolean getIsDay() {
-        return this.isDay;
+        return isDay;
     }
 
     /**
@@ -177,23 +179,23 @@ public class SkyDomeControl implements Control {
      * @return cycleSpeed  Default value is .125f
      */
     public float getDayNightTransitionSpeed() {
-        return this.cycleSpeed;
+        return cycleSpeed;
     }
 
     /**
      * Begins cycle day to night
      */
     public void cycleDayToNight() {
-        this.cycleD2N = true;
-        this.cycleN2D = false;
+        cycleD2N = true;
+        cycleN2D = false;
     }
 
     /**
      * Begins cycle night to day
      */
     public void cycleNightToDay() {
-        this.cycleD2N = false;
-        this.cycleN2D = true;
+        cycleD2N = false;
+        cycleN2D = true;
     }
 
 // Fog
@@ -226,7 +228,7 @@ public class SkyDomeControl implements Control {
      * @return fogColor  Default value is 0.7f, 0.7f, 0.7f, 0.6f
      */
     public ColorRGBA getFogColor() {
-        return this.fogColor;
+        return fogColor;
     }
 
     /**
@@ -246,7 +248,7 @@ public class SkyDomeControl implements Control {
      * @return fogNightColor  Default value is 0.3f, 0.3f, 0.3f, 0.6f
      */
     public ColorRGBA getFogNightColor() {
-        return this.fogNightColor;
+        return fogNightColor;
     }
 
     /**
@@ -264,7 +266,7 @@ public class SkyDomeControl implements Control {
      * @return controlFog  Default value is false
      */
     public boolean getControlFog() {
-        return this.controlFog;
+        return controlFog;
     }
 
 // Sun
@@ -302,7 +304,7 @@ public class SkyDomeControl implements Control {
      * @return sunDayLight  Default value is 1f, 1f, 1f, 1f
      */
     public ColorRGBA getSunDayLight() {
-        return this.sunDayLight;
+        return sunDayLight;
     }
 
     /**
@@ -311,7 +313,7 @@ public class SkyDomeControl implements Control {
      * @return sunNightLight  Default value is .45f, .45f, .45f, 1f
      */
     public ColorRGBA getSunNightLight() {
-        return this.sunNightLight;
+        return sunNightLight;
     }
 
     /**
@@ -329,7 +331,7 @@ public class SkyDomeControl implements Control {
      * @return controlSun  Default value is false
      */
     public boolean getControlSun() {
-        return this.controlSun;
+        return controlSun;
     }
 
 // Day time color
@@ -351,7 +353,7 @@ public class SkyDomeControl implements Control {
      * @return dayColor  Default value is .7f, .7f, 1f, 1f
      */
     public ColorRGBA getDaySkyColor() {
-        return this.dayColor;
+        return dayColor;
     }
 
     /**
@@ -371,7 +373,7 @@ public class SkyDomeControl implements Control {
      * @return nightColor  Default value is .4f, .3f, .6f, 1f
      */
     public ColorRGBA getSkyNightColor() {
-        return this.nightColor;
+        return nightColor;
     }
 
 // Moon
@@ -393,7 +395,7 @@ public class SkyDomeControl implements Control {
      * @return moonRotation  Default value 75f
      */
     public float getMoonRotation() {
-        return this.moonRotation;
+        return moonRotation;
     }
 
     /**
@@ -413,7 +415,7 @@ public class SkyDomeControl implements Control {
      * @return moonSpeed  Default value .0185f
      */
     public float getMoonSpeed() {
-        return this.moonSpeed;
+        return moonSpeed;
     }
 
 // Clouds
@@ -435,7 +437,7 @@ public class SkyDomeControl implements Control {
      * @return cloud2Rotation  Default value FastMath.HALF_PI+0.02f
      */
     public float getCloudsNearRotation() {
-        return this.cloud2Rotation;
+        return cloud2Rotation;
     }
 
     /**
@@ -451,9 +453,10 @@ public class SkyDomeControl implements Control {
 
     /**
      * Gets the near cloud layer movement speed
+     * @return cloudSpeed Default value .05f
      */
     public float getCloudsNearSpeed() {
-        return this.cloud2Speed;
+        return cloud2Speed;
     }
 
     /**
@@ -473,7 +476,7 @@ public class SkyDomeControl implements Control {
      * @return cloud1Rotation  Default value FastMath.HALF_PI+0.02f
      */
     public float getCloudsFarRotation() {
-        return this.cloud1Rotation;
+        return cloud1Rotation;
     }
 
     /**
@@ -493,7 +496,7 @@ public class SkyDomeControl implements Control {
      * @return cloud1Speed  Default value .025f
      */
     public float getCloudsFarSpeed() {
-        return this.cloud1Speed;
+        return cloud1Speed;
     }
 
     /**
@@ -511,7 +514,7 @@ public class SkyDomeControl implements Control {
      * @return cloudMaxOpacity  Default value 1f
      */
     public float getCloudMaxOpacity() {
-        return this.cloudMaxAlpha;
+        return cloudMaxAlpha;
     }
 
     /**
@@ -529,7 +532,7 @@ public class SkyDomeControl implements Control {
      * @return cloudMinOpacity  Default value 0f
      */
     public float getCloudMinOpacity() {
-        return this.cloudMinAlpha;
+        return cloudMinAlpha;
     }
 
     /**
@@ -547,7 +550,7 @@ public class SkyDomeControl implements Control {
      * @return cloudCycleSpeed  Default value .125f
      */
     public float getCloudCycleSpeed() {
-        return this.cloudCycleSpeed;
+        return cloudCycleSpeed;
     }
 
 
@@ -557,18 +560,19 @@ public class SkyDomeControl implements Control {
      * Begin cycle clouds in
      */
     public void cycleCloudsIn() {
-        this.cycleCI = true;
-        this.cycleCO = false;
+        cycleCI = true;
+        cycleCO = false;
     }
 
     /**
      * Begin cycle clouds out
      */
     public void cycleCloudsOut() {
-        this.cycleCI = false;
-        this.cycleCO = true;
+        cycleCI = false;
+        cycleCO = true;
     }
 
+    @Override
     public void update(float tpf) {
         if (spatial != null && enabled) {
             Vector3f camLoc = cam.getLocation();
@@ -641,27 +645,27 @@ public class SkyDomeControl implements Control {
         }
     }
 
+    @Override
     public void render(RenderManager rm, ViewPort vp) {
 
     }
 
+    @Override
     public Control cloneForSpatial(Spatial spatial) {
-        SkyDomeControl control = new SkyDomeControl(this.assetManager, this.cam,
-                this.model,
-                this.nightSkyMap,
-                this.moonMap,
-                this.cloudsMap,
-                this.fogAlphaMap);
+        SkyDomeControl control = new SkyDomeControl(assetManager, cam, model,
+                nightSkyMap, moonMap, cloudsMap, fogAlphaMap);
         control.spatial.addControl(control);
         return control;
     }
 
+    @Override
     public void write(JmeExporter ex) throws IOException {
         OutputCapsule oc = ex.getCapsule(this);
         oc.write(enabled, "enabled", true);
         oc.write(spatial, "spatial", null);
     }
 
+    @Override
     public void read(JmeImporter im) throws IOException {
         InputCapsule ic = im.getCapsule(this);
         enabled = ic.readBoolean("enabled", true);
