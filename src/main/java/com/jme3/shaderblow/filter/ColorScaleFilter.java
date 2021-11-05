@@ -31,7 +31,13 @@
  */
 package com.jme3.shaderblow.filter;
 
+import java.io.IOException;
+
 import com.jme3.asset.AssetManager;
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.post.Filter;
@@ -57,17 +63,15 @@ public class ColorScaleFilter extends Filter {
     /**
      * Default values
      */
-    private static final ColorRGBA DEAFULT_COLOR = ColorRGBA.Red.clone();
-    private static final float DEFAULT_DENSITY = 0.7f;
-
-    private ColorRGBA filterColor = null;
-    private float colorDensity = 0f;
+    private ColorRGBA filterColor = ColorRGBA.Red.clone();
+    private float colorDensity = 0.7f;
+    private boolean overlay;
+    private boolean multiply;
 
     /**
      * Default Constructor.
      */
     public ColorScaleFilter() {
-        this(DEAFULT_COLOR, DEFAULT_DENSITY);
     }
 
     /**
@@ -88,6 +92,8 @@ public class ColorScaleFilter extends Filter {
         material = new Material(manager, "MatDefs/Filters/ColorScale/ColorScale.j3md");
         material.setColor("FilterColor", filterColor);
         material.setFloat("ColorDensity", colorDensity);
+        material.setBoolean("Overlay", overlay);
+        material.setBoolean("Multiply", multiply);
     }
 
     @Override
@@ -95,12 +101,26 @@ public class ColorScaleFilter extends Filter {
         return material;
     }
 
+    public boolean isOverlay() {
+        return overlay;
+    }
+
     public void setOverlay(boolean overlay) {
-        material.setBoolean("Overlay", overlay);
+        this.overlay = overlay;
+        if (material != null) {
+            material.setBoolean("Overlay", overlay);
+        }
+    }
+
+    public boolean isMultiply() {
+        return multiply;
     }
 
     public void setMultiply(boolean multiply) {
-        material.setBoolean("Multiply", multiply);
+        this.multiply = multiply;
+        if (material != null) {
+            material.setBoolean("Multiply", multiply);
+        }
     }
 
     public float getColorDensity() {
@@ -108,9 +128,9 @@ public class ColorScaleFilter extends Filter {
     }
 
     public void setColorDensity(float colorDensity) {
+        this.colorDensity = colorDensity;
         if (material != null) {
             material.setFloat("ColorDensity", colorDensity);
-            this.colorDensity = colorDensity;
         }
     }
 
@@ -119,10 +139,30 @@ public class ColorScaleFilter extends Filter {
     }
 
     public void setFilterColor(ColorRGBA filterColor) {
+        this.filterColor = filterColor;
         if (material != null) {
             material.setColor("FilterColor", filterColor);
-            this.filterColor = filterColor;
         }
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+        super.write(ex);
+        OutputCapsule oc = ex.getCapsule(this);
+        oc.write(filterColor, "filterColor", ColorRGBA.Red);
+        oc.write(colorDensity, "colorDensity", 0.7f);
+        oc.write(multiply, "multiply", false);
+        oc.write(overlay, "overlay", false);
+    }
+
+    @Override
+    public void read(JmeImporter im) throws IOException {
+        super.read(im);
+        InputCapsule ic = im.getCapsule(this);
+        filterColor = (ColorRGBA) ic.readSavable("filterColor", ColorRGBA.Red);
+        colorDensity = ic.readFloat("colorDensity", 0.7f);
+        multiply = ic.readBoolean("multiply", false);
+        overlay = ic.readBoolean("overlay", false);
     }
 
 }
