@@ -47,7 +47,7 @@ public class PredatorVisionFilter extends Filter {
     private float screenWidth = 1.0f;
 
     public PredatorVisionFilter() {
-        super("PreadtorVisionFilter");
+        super("PredatorVisionFilter");
     }
 
     @Override
