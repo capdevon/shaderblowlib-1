@@ -1,7 +1,6 @@
 package com.jme3.shaderblow.test;
 
 import com.jme3.asset.AssetManager;
-import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
@@ -34,12 +33,11 @@ public class SceneHelper {
         texture.setWrap(Texture.WrapMode.Repeat);
         mat.setTexture("ColorMap", texture);
 
-        Box box = new Box(70, 0.25f, 70);
-        box.scaleTextureCoordinates(new Vector2f(3, 3));
+        Box box = new Box(40, 0.25f, 40);
+        box.scaleTextureCoordinates(new Vector2f(10, 10));
         Geometry floor = new Geometry("Floor", box);
         floor.setMaterial(mat);
         floor.setLocalTranslation(0, -1, 0);
-        floor.addControl(new RigidBodyControl(0));
 
         rootNode.attachChild(floor);
         return floor;
