@@ -62,10 +62,9 @@ public class TestTextureBombing extends SimpleApplication {
         char_boy1.setLocalTranslation(2.5f, -1, 0);
         TangentBinormalGenerator.generate(char_boy1);
 
-        AnimControl animControl = char_boy1.getControl(AnimControl.class);
-        AnimChannel channel = animControl.createChannel();
-        channel.setAnim("Action");
-        SkeletonControl skControl = char_boy1.getControl(SkeletonControl.class);
+        AnimComposer composer = char_boy1.getControl(AnimComposer.class);
+        composer.setCurrentAction("Action");
+        SkinningControl skControl = char_boy1.getControl(SkinningControl.class);
         skControl.setHardwareSkinningPreferred(true);
 
         rootNode.attachChild(char_boy1);
