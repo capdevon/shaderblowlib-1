@@ -146,7 +146,7 @@ public class TestDissolve extends SimpleApplication {
 
         count += tpf * m_speed * dir;
 
-        // animation ossolation
+        // animation oscillation
         if (count > 1f) {
             dir = -1;
         } else if (count < 0) {
