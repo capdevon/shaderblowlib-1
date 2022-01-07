@@ -36,21 +36,6 @@ public class ForceShieldControl extends AbstractControl {
         this.material = material;
     }
 
-    public void registerHit(Vector3f position) {
-        if (isEnabled()) {
-            timer = 0f;
-            material.setBoolean("Work", true);
-            work = true;
-
-            Vector3f localPos = new Vector3f();
-            spatial.worldToLocal(position, localPos);
-            collisions.add(new Vector3f(localPos.x, localPos.y, localPos.z));
-            collisionTimes.add(maxTime);
-            numChanged = true;
-            updateCollisionPoints();
-        }
-    }
-
     public void setColor(ColorRGBA color) {
         material.setColor("Color", color);
     }
@@ -74,6 +59,21 @@ public class ForceShieldControl extends AbstractControl {
     public void setMaxTime(float maxTime) {
         this.maxTime = maxTime;
         timerSize = maxTime * 3f;
+    }
+    
+    public void registerHit(Vector3f position) {
+        if (isEnabled()) {
+            timer = 0f;
+            material.setBoolean("Work", true);
+            work = true;
+
+            Vector3f localPos = new Vector3f();
+            spatial.worldToLocal(position, localPos);
+            collisions.add(localPos);
+            collisionTimes.add(maxTime);
+            numChanged = true;
+            updateCollisionPoints();
+        }
     }
 
     @Override
