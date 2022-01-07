@@ -49,41 +49,36 @@ public class SceneHelper {
      */
     public static void buildLights(Node rootNode) {
         DirectionalLight sun = new DirectionalLight();
+        sun.setName("SunLight");
         sun.setDirection(new Vector3f(-0.8f, -0.6f, -0.08f).normalizeLocal());
         sun.setColor(new ColorRGBA(1, 1, 1, 1));
         rootNode.addLight(sun);
 
         AmbientLight ambient = new AmbientLight();
+        ambient.setName("AmbientLight");
         ambient.setColor(new ColorRGBA(1.5f, 1.5f, 1.5f, 1.0f));
         rootNode.addLight(ambient);
     }
 
     /**
      *
-     * @param assetManager
+     * @param am
      * @param rootNode
      */
-    public static void buildTestModel(AssetManager assetManager, Node rootNode) {
-        Spatial char_boy1 = assetManager.loadModel("Models/LightBlow/jme_lightblow.mesh.xml");
-        Material mat1 = assetManager.loadMaterial("Materials/MatCap/MatCap1.j3m");
-        char_boy1.setMaterial(mat1);
-        char_boy1.setLocalTranslation(0, 0, 0);
-        TangentBinormalGenerator.generate(char_boy1);
-        rootNode.attachChild(char_boy1);
+    public static void buildTestModel(AssetManager am, Node rootNode) {
+        String dirName = "Materials/MatCap/";
+        loadModel(am, dirName + "MatCap1.j3m", new Vector3f(0, 0, 0), rootNode);
+        loadModel(am, dirName + "MatCapBump1.j3m", new Vector3f(2, 0, 0), rootNode);
+        loadModel(am, dirName + "MatCap2.j3m", new Vector3f(-2, 0, 0), rootNode);
+    }
 
-        Spatial char_boy2 = assetManager.loadModel("Models/LightBlow/jme_lightblow.mesh.xml");
-        Material mat2 = assetManager.loadMaterial("Materials/MatCap/MatCapBump1.j3m");
-        char_boy2.setMaterial(mat2);
-        char_boy2.setLocalTranslation(2, 0, 0);
-        TangentBinormalGenerator.generate(char_boy2);
-        rootNode.attachChild(char_boy2);
-
-        Spatial char_boy3 = assetManager.loadModel("Models/LightBlow/jme_lightblow.mesh.xml");
-        Material mat3 = assetManager.loadMaterial("Materials/MatCap/MatCap2.j3m");
-        char_boy3.setMaterial(mat3);
-        char_boy3.setLocalTranslation(-2, 0, 0);
-        TangentBinormalGenerator.generate(char_boy3);
-        rootNode.attachChild(char_boy3);
+    private static void loadModel(AssetManager am, String matDef, Vector3f position, Node parent) {
+        Spatial sp = am.loadModel("Models/LightBlow/jme_lightblow.mesh.xml");
+        Material mat = am.loadMaterial(matDef);
+        sp.setMaterial(mat);
+        TangentBinormalGenerator.generate(sp);
+        sp.setLocalTranslation(position);
+        parent.attachChild(sp);
     }
 
     /**
