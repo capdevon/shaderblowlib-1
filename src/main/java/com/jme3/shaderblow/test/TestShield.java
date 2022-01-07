@@ -42,75 +42,123 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
+import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.shaderblow.forceshield.ForceShieldControl;
+import com.jme3.system.AppSettings;
 
 /**
- * 
+ *
  * @author shaderblow
  */
 public class TestShield extends SimpleApplication implements ActionListener {
 
-    private ForceShieldControl forceShieldControl;
+    private Node shipNode;
+    private float angle = 0;
 
     /**
      *
      * @param args
      */
     public static void main(String[] args) {
-        new TestShield().start();
+        TestShield app = new TestShield();
+        AppSettings settings = new AppSettings(true);
+        settings.setTitle("TestShield");
+        settings.setResolution(1280, 720);
+        app.setSettings(settings);
+        app.setPauseOnLostFocus(false);
+        app.setShowSettings(false);
+        app.start();
     }
 
     @Override
     public void simpleInitApp() {
 
         initCrossHairs();
+        addLighting();
+        createShip();
+        configInputs();
 
-        DirectionalLight sun = new DirectionalLight();
-        sun.setDirection(new Vector3f(1, -1, 0));
-        rootNode.addLight(sun);
+        viewPort.setBackgroundColor(ColorRGBA.DarkGray);
+        flyCam.setMoveSpeed(10);
+    }
 
-        Box box = new Box(1, 1, 1);
-        Geometry cube = new Geometry("ship", box);
-        cube.setLocalScale(0.5f, 0.5f, 0.5f);
-        Material mat1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat1.setColor("Color", ColorRGBA.randomColor());
-        cube.setMaterial(mat1);
-        rootNode.attachChild(cube);
+    @Override
+    public void simpleUpdate(float tpf) {
+        angle += tpf;
+        angle %= FastMath.TWO_PI;
+        float x = FastMath.cos(angle) * 2;
+        float y = FastMath.sin(angle) * 2;
+        shipNode.setLocalTranslation(x, 0, y);
+        shipNode.rotate(0, tpf, 0);
+    }
 
-        // Create spatial to be the shield
+    private void createShip() {
+
+        shipNode = new Node("ShipNode");
+
+        Geometry ship = createMesh("ShipMesh", new Box(1, 1, 1), ColorRGBA.Blue);
+        ship.setLocalScale(0.5f, 0.5f, 0.5f);
+        shipNode.attachChild(ship);
+
+        Geometry shield = createShield();
+        shipNode.attachChild(shield);
+
+        rootNode.attachChild(shipNode);
+    }
+
+    private Geometry createMesh(String name, Mesh mesh, ColorRGBA color) {
+        Geometry geo = new Geometry(name, mesh);
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", color);
+        geo.setMaterial(mat);
+        return geo;
+    }
+
+    private Geometry createShield() {
         Sphere sphere = new Sphere(30, 30, 1.2f);
-        Geometry shield = new Geometry("forceshield", sphere);
+        Geometry shield = new Geometry("ForceShield", sphere);
         shield.setQueueBucket(Bucket.Transparent); // Remember to set the queue bucket to transparent for the spatial
 
-        // Create ForceShield
-        Material forceMat = new Material(assetManager, "MatDefs/ForceShield/ForceShield.j3md");
-        forceMat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-        forceMat.getAdditionalRenderState().setDepthWrite(false);
-        forceMat.setFloat("MaxDistance", 1);
-        forceMat.setTexture("ColorMap", assetManager.loadTexture("Textures/ForceShield/fs_texture.png"));
-//        forceMat.setColor("Color", new ColorRGBA(1, 0, 0, 3));
-//        forceMat.setFloat("MinAlpha", 0.1f);
-
-        forceShieldControl = new ForceShieldControl(forceMat);
+        Material forceMat = createForceShieldMAT();
+        ForceShieldControl forceShieldControl = new ForceShieldControl(forceMat);
         shield.addControl(forceShieldControl); // Add the control to the spatial
         forceShieldControl.setEffectSize(1.2f); // Set the effect size
-        forceShieldControl.setColor(new ColorRGBA(1, 0, 0, 3)); // Set effect color
+        forceShieldControl.setColor(ColorRGBA.Cyan); // Set effect color
         forceShieldControl.setVisibility(0.03f); // Set shield visibility.
         forceShieldControl.setMaxTime(0.5f);
 //        forceShieldControl.setTexture(assetManager.loadTexture("Textures/ForceShield/fs_texture.png")); // Set a texture to the shield
 //        forceShieldControl.setEnabled(false); // Enable, disable animation.
 
-        rootNode.attachChild(shield);
+        return shield;
+    }
 
-        viewPort.setBackgroundColor(ColorRGBA.Gray);
-        flyCam.setMoveSpeed(10);
+    private Material createForceShieldMAT() {
+        // Create ForceShield
+        Material mat = new Material(assetManager, "MatDefs/ForceShield/ForceShield.j3md");
+        mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        mat.getAdditionalRenderState().setDepthWrite(false);
+        mat.setFloat("MaxDistance", 1);
+        mat.setTexture("ColorMap", assetManager.loadTexture("Textures/ForceShield/fs_texture.png"));
+//        mat.setColor("Color", new ColorRGBA(1, 0, 0, 3));
+//        mat.setFloat("MinAlpha", 0.1f);
+        return mat;
+    }
 
+    private void addLighting() {
+        DirectionalLight sun = new DirectionalLight();
+        sun.setDirection(new Vector3f(1, -1, 0));
+        rootNode.addLight(sun);
+    }
+
+    private void configInputs() {
         inputManager.addMapping("FIRE", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(this, "FIRE");
     }
@@ -125,24 +173,29 @@ public class TestShield extends SimpleApplication implements ActionListener {
 
             if (results.size() > 0) {
                 CollisionResult closest = results.getClosestCollision();
-                Vector3f point = closest.getContactPoint();
+                Geometry geo    = closest.getGeometry();
+                Vector3f point  = closest.getContactPoint();
+                float dist      = closest.getDistance();
+                String target   = geo.getName();
+                System.out.println("Hit #" + target + " at " + point + ", " + dist + " WU away.");
 
-                System.out.println("Hit at " + point);
-                forceShieldControl.registerHit(point);
+                ForceShieldControl control = geo.getControl(ForceShieldControl.class);
+                if (control != null) {
+                    control.registerHit(point);
+                }
             }
         }
     }
 
     private void initCrossHairs() {
-        guiNode.detachAllChildren();
         guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
-        BitmapText ch = new BitmapText(guiFont, false);
+        BitmapText ch = new BitmapText(guiFont);
         ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
         ch.setText("+"); // crosshairs
-        ch.setLocalTranslation(
-                // center
-                settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
-                settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
+        float x = settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2;
+        float y = settings.getHeight() / 2 + ch.getLineHeight() / 2;
+        // center
+        ch.setLocalTranslation(x, y, 0);
         guiNode.attachChild(ch);
     }
 
