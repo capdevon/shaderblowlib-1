@@ -7,7 +7,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.shader.VarType;
 import com.jme3.texture.Texture;
@@ -78,11 +77,6 @@ public class ForceShieldControl extends AbstractControl {
     }
 
     @Override
-    public void setSpatial(Spatial sp) {
-        super.setSpatial(sp);
-    }
-
-    @Override
     public void controlUpdate(float tpf) {
         if (work) {
 
@@ -93,35 +87,39 @@ public class ForceShieldControl extends AbstractControl {
                 material.setBoolean("Work", false);
                 timer = 0f;
                 work = false;
-                return;
+                
+            } else {
+                updateCollision(tpf);
             }
-
-            for (int i = 0; i < collisionTimes.size(); i++) {
-                float time = collisionTimes.get(i);
-                time -= tpf;
-                if (time <= 0) {
-                    collisionTimes.remove(i);
-                    collisions.remove(i);
-                    numChanged = true;
-                    i--;
-                    continue;
-                }
-                collisionTimes.set(i, time);
-            }
-            if (numChanged) {
-                updateCollisionPoints();
-            }
-
-            timer += tpf * 3f;
-            updateCollisionAlpha();
-
-            numChanged = false;
         }
     }
 
     @Override
     public void controlRender(RenderManager rm, ViewPort vp) {
         // TODO Auto-generated method stub
+    }
+    
+    protected void updateCollision(float tpf) {
+        for (int i = 0; i < collisionTimes.size(); i++) {
+            float time = collisionTimes.get(i);
+            time -= tpf;
+            if (time <= 0) {
+                collisionTimes.remove(i);
+                collisions.remove(i);
+                numChanged = true;
+                i--;
+                continue;
+            }
+            collisionTimes.set(i, time);
+        }
+        if (numChanged) {
+            updateCollisionPoints();
+        }
+
+        timer += tpf * 3f;
+        updateCollisionAlpha();
+
+        numChanged = false;
     }
 
     protected void updateCollisionAlpha() {
