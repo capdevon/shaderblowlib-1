@@ -7,7 +7,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.shader.VarType;
@@ -81,10 +80,6 @@ public class ForceShieldControl extends AbstractControl {
     @Override
     public void setSpatial(Spatial sp) {
         super.setSpatial(sp);
-        if (spatial != null) {
-            spatial.setMaterial(material);
-            spatial.setQueueBucket(Bucket.Transparent);
-        }
     }
 
     @Override
