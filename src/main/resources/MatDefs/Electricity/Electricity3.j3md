@@ -64,7 +64,6 @@ MaterialDef Electricity3 {
             NUM_BONES : NumberOfBones
         }
     }
-}
 
 }
     
