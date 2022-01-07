@@ -125,13 +125,14 @@ public class TestShield extends SimpleApplication implements ActionListener {
     private Geometry createShield() {
         Sphere sphere = new Sphere(30, 30, 1.2f);
         Geometry shield = new Geometry("ForceShield", sphere);
-        shield.setQueueBucket(Bucket.Transparent); // Remember to set the queue bucket to transparent for the spatial
-
         Material forceMat = createForceShieldMAT();
+        shield.setMaterial(forceMat);
+        shield.setQueueBucket(Bucket.Transparent); // Remember to set the queue bucket to transparent for the spatial
+        
         ForceShieldControl forceShieldControl = new ForceShieldControl(forceMat);
         shield.addControl(forceShieldControl); // Add the control to the spatial
         forceShieldControl.setEffectSize(1.2f); // Set the effect size
-        forceShieldControl.setColor(ColorRGBA.Cyan); // Set effect color
+        forceShieldControl.setColor(ColorRGBA.Cyan); //new ColorRGBA(1, 0, 0, 3)); // Set effect color
         forceShieldControl.setVisibility(0.03f); // Set shield visibility.
         forceShieldControl.setMaxTime(0.5f);
 //        forceShieldControl.setTexture(assetManager.loadTexture("Textures/ForceShield/fs_texture.png")); // Set a texture to the shield
