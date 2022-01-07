@@ -340,20 +340,20 @@ Technique PostShadow15{
     }
 
 
-Technique Refract {
+    Technique Refract {
 
-VertexShader GLSL100:   ShaderBlow/Filters/SimpleRefraction/Refract.vert
-FragmentShader GLSL100: ShaderBlow/Filters/SimpleRefraction/Refract.frag
+        VertexShader GLSL100:   Filters/SimpleRefraction/Refract.vert
+        FragmentShader GLSL100: Filters/SimpleRefraction/Refract.frag
 
-WorldParameters {
-WorldViewProjectionMatrix
-}
+        WorldParameters {
+            WorldViewProjectionMatrix
+        }
 
-Defines {
-DO_REFRACT : DoRefract
-MASK_TEXTURE : Mask_Texture
-NUM_BONES : NumberOfBones
-}
-}
+        Defines {
+            DO_REFRACT : DoRefract
+            MASK_TEXTURE : Mask_Texture
+            NUM_BONES : NumberOfBones
+        }
+    }
 
 }
