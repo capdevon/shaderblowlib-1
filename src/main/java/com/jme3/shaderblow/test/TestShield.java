@@ -129,14 +129,14 @@ public class TestShield extends SimpleApplication implements ActionListener {
         shield.setMaterial(forceMat);
         shield.setQueueBucket(Bucket.Transparent); // Remember to set the queue bucket to transparent for the spatial
         
-        ForceShieldControl forceShieldControl = new ForceShieldControl(forceMat);
-        shield.addControl(forceShieldControl); // Add the control to the spatial
-        forceShieldControl.setEffectSize(1.2f); // Set the effect size
-        forceShieldControl.setColor(ColorRGBA.Cyan); //new ColorRGBA(1, 0, 0, 3)); // Set effect color
-        forceShieldControl.setVisibility(0.03f); // Set shield visibility.
-        forceShieldControl.setMaxTime(0.5f);
-//        forceShieldControl.setTexture(assetManager.loadTexture("Textures/ForceShield/fs_texture.png")); // Set a texture to the shield
-//        forceShieldControl.setEnabled(false); // Enable, disable animation.
+        ForceShieldControl fShield = new ForceShieldControl(forceMat);
+        shield.addControl(fShield);
+        fShield.setEffectSize(1.2f);
+        fShield.setColor(ColorRGBA.Cyan);
+        fShield.setVisibility(0.03f);
+        fShield.setMaxTime(0.5f);
+        fShield.setTexture(assetManager.loadTexture("Textures/ForceShield/fs_texture.png"));
+//        fShield.setEnabled(false);
 
         return shield;
     }
@@ -147,7 +147,7 @@ public class TestShield extends SimpleApplication implements ActionListener {
         mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
         mat.getAdditionalRenderState().setDepthWrite(false);
         mat.setFloat("MaxDistance", 1);
-        mat.setTexture("ColorMap", assetManager.loadTexture("Textures/ForceShield/fs_texture.png"));
+//        mat.setTexture("ColorMap", assetManager.loadTexture("Textures/ForceShield/fs_texture.png"));
 //        mat.setColor("Color", new ColorRGBA(1, 0, 0, 3));
 //        mat.setFloat("MinAlpha", 0.1f);
         return mat;
@@ -189,7 +189,7 @@ public class TestShield extends SimpleApplication implements ActionListener {
     }
 
     private void initCrossHairs() {
-        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        //guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
         BitmapText ch = new BitmapText(guiFont);
         ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
         ch.setText("+"); // crosshairs
