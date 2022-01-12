@@ -13,7 +13,7 @@ repositories {
 }
 
 project.ext {
-    jmeVersion = '3.4.0-stable'
+    jmeVersion = '3.4.1-stable'
 }
 
 dependencies {
