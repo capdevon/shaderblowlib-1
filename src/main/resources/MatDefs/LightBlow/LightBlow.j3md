@@ -34,16 +34,16 @@ MaterialDef LightBlow {
         // No attenuation increases fps
         Boolean No_Attenuation
 
-     // Output emission from the diffuse map alpha channel
+        // Output emission from the diffuse map alpha channel
         Boolean EmissiveMap
         
         // Apha threshold for fragment discarding
         Float AlphaDiscardThreshold (AlphaTestFallOff)
 
-     // Output alpha from the diffuse map
+        // Output alpha from the diffuse map
         Boolean Alpha_A_Dif
 
-     // Output alpha from the diffuse map
+        // Output alpha from the diffuse map
         Boolean Alpha_A_Nor   
        
         // Switch Normal Map xyz(rgb) channels
@@ -153,14 +153,14 @@ MaterialDef LightBlow {
         // X = bias
         // Y = scale
         // Z = power
-      //  Vector3 FresnelParams
+        //Vector3 FresnelParams
 
         // the ref map is a spheremap and not a cube map
         Boolean EnvMapAsSphereMap
 
 
         //shadows
-         Int FilterMode
+        Int FilterMode
         Boolean HardwareShadows
 
         Texture2D ShadowMap0
@@ -281,11 +281,9 @@ MaterialDef LightBlow {
             FOG_EDGES : Fog_Edges
 
             NUM_BONES : NumberOfBones
-
         }
 
     }
-
 
     Technique CartoonEdge {
 
@@ -472,19 +470,20 @@ Technique PostShadow15{
         }
     }
 
-Technique Refract {
+    Technique Refract {
 
-VertexShader GLSL100:   Filters/SimpleRefraction/Refract.vert
-FragmentShader GLSL100: Filters/SimpleRefraction/Refract.frag
+        VertexShader GLSL100:   Filters/SimpleRefraction/Refract.vert
+        FragmentShader GLSL100: Filters/SimpleRefraction/Refract.frag
 
-WorldParameters {
-WorldViewProjectionMatrix
-}
+        WorldParameters {
+            WorldViewProjectionMatrix
+        }
 
-Defines {
-DO_REFRACT : DoRefract
-MASK_TEXTURE : Mask_Texture
-}
-}
+        Defines {
+            DO_REFRACT : DoRefract
+            MASK_TEXTURE : Mask_Texture
+            //NUM_BONES : NumberOfBones
+        }
+    }
 
 }
