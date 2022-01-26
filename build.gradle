@@ -13,7 +13,7 @@ repositories {
 }
 
 project.ext {
-    jmeVersion = '3.4.1-stable'
+    jmeVersion = '3.5.0-stable'
 }
 
 dependencies {
@@ -24,12 +24,6 @@ dependencies {
     implementation 'org.jmonkeyengine:jme3-effects:' + jmeVersion
     implementation 'org.jmonkeyengine:jme3-terrain:' + jmeVersion
     //implementation "org.jmonkeyengine:jme3-blender:3.2.4"
-    
-    // If your game needs physics, select either:
-    //    1. Minie
-    //implementation 'com.github.stephengold:Minie:4.6.0'
-    //    2. jme3-jbullet
-    //implementation 'org.jmonkeyengine:jme3-jbullet:' + jmeVersion
 
     // select one version of LWJGL
     //runtimeOnly 'org.jmonkeyengine:jme3-lwjgl:' + jmeVersion  // LWJGL 2.x
