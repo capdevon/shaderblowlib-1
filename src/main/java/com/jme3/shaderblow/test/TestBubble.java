@@ -29,7 +29,7 @@ public class TestBubble extends SimpleApplication {
     public void simpleInitApp() {
         Sphere sphere = new Sphere(200, 200, 1);
         Geometry geom = new Geometry("Sphere", sphere);
-        Material mat = new Material(assetManager, "MatDefs/Bubble/Bubble.j3md"); //"Common/MatDefs/Misc/Unshaded.j3md");//"MatDefs/bubbleMat.j3md");
+        Material mat = new Material(assetManager, "MatDefs/Bubble/Bubble.j3md");
         mat.setTexture("ColorMap", assetManager.loadTexture("Textures/Bubble/rainbow.png"));
         mat.setFloat("Shininess", 20f);
         mat.setColor("SpecularColor", ColorRGBA.Blue);
@@ -49,11 +49,5 @@ public class TestBubble extends SimpleApplication {
     public void simpleUpdate(float tpf) {
 
     }
-    
-    /*
-    Uncaught exception thrown in Thread[jME3 Main,5,main]
-    RendererException: compile error in: ShaderSource[name=Shaders/Bubble/Bubble.vert, defines, type=Vertex, language=GLSL100]
-    ERROR: 0:46: 'assign' :  cannot convert from 'highp float' to 'varying 3-component vector of highp float'
-    */
 
 }
