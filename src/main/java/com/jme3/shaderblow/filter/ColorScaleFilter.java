@@ -150,20 +150,20 @@ public class ColorScaleFilter extends Filter {
     public void write(JmeExporter ex) throws IOException {
         super.write(ex);
         OutputCapsule oc = ex.getCapsule(this);
-        oc.write(filterColor, "filterColor", ColorRGBA.Red);
-        oc.write(colorDensity, "colorDensity", 0.7f);
-        oc.write(multiply, "multiply", false);
-        oc.write(overlay, "overlay", false);
+        oc.write(filterColor, "FilterColor", ColorRGBA.Red);
+        oc.write(colorDensity, "ColorDensity", 0.7f);
+        oc.write(multiply, "Multiply", false);
+        oc.write(overlay, "Overlay", false);
     }
 
     @Override
     public void read(JmeImporter im) throws IOException {
         super.read(im);
         InputCapsule ic = im.getCapsule(this);
-        filterColor = (ColorRGBA) ic.readSavable("filterColor", ColorRGBA.Red);
-        colorDensity = ic.readFloat("colorDensity", 0.7f);
-        multiply = ic.readBoolean("multiply", false);
-        overlay = ic.readBoolean("overlay", false);
+        filterColor = (ColorRGBA) ic.readSavable("FilterColor", ColorRGBA.Red);
+        colorDensity = ic.readFloat("ColorDensity", 0.7f);
+        multiply = ic.readBoolean("Multiply", false);
+        overlay = ic.readBoolean("Overlay", false);
     }
 
 }
